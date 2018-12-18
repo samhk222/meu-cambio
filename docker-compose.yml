@@ -21,6 +21,14 @@ services:
     environment:
       - AMBIENTE:DEV
 
+  # cronjob:
+  #   build: 
+  #     context: .docker/bin/cronjob
+  #   container_name: 'NEWSREADER-cronjob'
+  #   restart: 'always'
+  #   depends_on: 
+  #       - webserver
+
   mysql:
     build: .docker/bin/mysql
     container_name: 'NEWSREADER-5.6-mysql'

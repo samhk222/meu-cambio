@@ -4,8 +4,8 @@ RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
 
 RUN apt-get -y install apt-utils iputils-ping nano wget dialog \
-    build-essential git curl libcurl3 libcurl3-dev zip \
-    libmcrypt-dev libsqlite3-dev libsqlite3-0 mysql-client openssl \
+    build-essential git curl libcurl3 libcurl3-dev zip supervisor \
+    libmcrypt-dev libsqlite3-dev libsqlite3-0 mysql-client openssl cron \
     zlib1g-dev libicu-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -51,8 +51,35 @@ ENV LARAVEL_PATH ~/.composer/vendor/bin
 #Enable apache modules
 RUN a2enmod rewrite headers proxy proxy_http
 
+RUN echo "n"
+# ADD crontab /etc/cron.d/hello-cron
+# ADD scripts.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/scripts.sh
+
+# RUN chmod 777 /etc/cron.d/hello-cron
+# RUN crontab /etc/cron.d/hello-cron &
+# RUN touch /var/log/cron.log
+
+# RUN touch /var/log/cron.log
+
+# RUN (crontab -l ; echo "* * * * * echo "Hello world" >> /var/log/cron.log") | crontab
+
+# CMD cron && tail -f /var/log/cron.log
+# RUN cron
+
+COPY crontab /var/crontab.txt
+RUN crontab /var/crontab.txt
+RUN chmod 600 /etc/crontab
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 EXPOSE 80
 
-ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+# RUN echo "/usr/sbin/apache2ctl -D FOREGROUND" >> /etc/bash.bashrc
+# RUN echo "cron" >> /etc/bash.bashrc
+ENTRYPOINT ["/usr/bin/supervisord"]
+
+
+# ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
 

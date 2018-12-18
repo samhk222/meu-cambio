@@ -14,4 +14,6 @@ class News extends Model
         return $this->hasOne('App\Feed', 'id', 'feeds_id');
     }
 
+    protected $dates = ['created_at', 'updated_at', 'pubDate'];
+
 }

@@ -15,7 +15,7 @@ class NewsController extends Controller
     public function index()
     {
         return view('news.index', [
-            'News' => News::paginate(15)
+            'News' => News::orderBy('pubDate','desc')->paginate(10)
         ]);
     }
 
@@ -46,10 +46,25 @@ class NewsController extends Controller
      * @param  \App\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Request $request)
     {
         //
+        $news = News::findorFail($request->id);
+        return view('news.show', ['news' => $news]);
     }
+
+    /**
+     * Display the specified resource as JSON format
+     *
+     * @param  \App\News  $news
+     * @return \Illuminate\Http\Response
+     */
+    public function showJSON(Request $request)
+    {
+        //
+        return News::findorFail($request->id);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
