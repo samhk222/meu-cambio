@@ -11,3 +11,4 @@
 .DS_Store
 bin/mysql*
 .docker/data/mysql/ib*
+*supervisord.log
