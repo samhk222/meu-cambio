@@ -183,3 +183,12 @@ AH00558: apache2: Could not reliably determine the server's fully qualified doma
 
 2018-12-18 20:03:02,659 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 2018-12-18 20:03:02,660 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-12-18 20:12:49,524 CRIT Supervisor running as root (no user in config file)
+2018-12-18 20:12:49,529 INFO supervisord started with pid 8
+2018-12-18 20:12:50,531 INFO spawned: 'cron' with pid 11
+2018-12-18 20:12:50,538 INFO spawned: 'apache2' with pid 12
+2018-12-18 20:12:50,650 DEBG 'apache2' stderr output:
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 192.168.80.5. Set the 'ServerName' directive globally to suppress this message
+
+2018-12-18 20:12:51,652 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2018-12-18 20:12:51,652 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
