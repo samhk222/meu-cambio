@@ -6,6 +6,7 @@
 .docker/data/
 .docker/mysql/data*
 .docker/mysql/data/*
+.docker/apache2/logs/*
 #/www/**
 .DS_Store
 bin/mysql*

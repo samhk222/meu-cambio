@@ -40,7 +40,7 @@ RUN composer global require laravel/installer
 #RUN export PATH=$PATH:$ADDITIONAL_PATH;
 
 ENV AMBIENTE DEV
-ENV DB_HOST NEWSREADER-5.6-mysql
+ENV DB_HOST NEWS-5.6-mysql
 ENV DB_DATABASE newsreader
 ENV DB_USERNAME root
 ENV DB_PASSWORD FB_e3W)>-)gH(/5m

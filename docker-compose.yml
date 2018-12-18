@@ -6,7 +6,7 @@ services:
   webserver:
     build: 
       context: .docker/bin/webserver
-    container_name: 'NEWSREADER-7.2.x-webserver'
+    container_name: 'NEWS-7.2.x-webserver'
     restart: 'always'
     ports:
       - "8877:80"
@@ -21,17 +21,9 @@ services:
     environment:
       - AMBIENTE:DEV
 
-  # cronjob:
-  #   build: 
-  #     context: .docker/bin/cronjob
-  #   container_name: 'NEWSREADER-cronjob'
-  #   restart: 'always'
-  #   depends_on: 
-  #       - webserver
-
   mysql:
     build: .docker/bin/mysql
-    container_name: 'NEWSREADER-5.6-mysql'
+    container_name: 'NEWS-5.6-mysql'
     restart: 'always'
     ports:
       - "3377:3306"
@@ -44,7 +36,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: 'NEWSREADER-phpmyadmin'
+    container_name: 'NEWS-phpmyadmin'
     links:
       - mysql
     environment:
@@ -56,7 +48,7 @@ services:
       - /sessions
   
   redis:
-    container_name: 'NEWSREADER-redis'
+    container_name: 'NEWS-redis'
     image: redis:latest
     ports:
       - "6379:6379"
