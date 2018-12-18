@@ -1,0 +1,12 @@
+# /.env
+/.vscode
+# /config/*
+*data/*
+/logs/*
+.docker/data/
+.docker/mysql/data*
+.docker/mysql/data/*
+#/www/**
+.DS_Store
+bin/mysql*
+.docker/data/mysql/ib*

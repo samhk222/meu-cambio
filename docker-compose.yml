@@ -1,0 +1,54 @@
+# https://github.com/sprintcube/docker-compose-lamp
+
+version: "3"
+
+services:
+  webserver:
+    build: 
+      context: .docker/bin/webserver
+    container_name: 'NEWSREADER-7.2.x-webserver'
+    restart: 'always'
+    ports:
+      - "8877:80"
+      - "443:443"
+    links: 
+      - mysql
+    volumes: 
+      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
+      - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
+      - ${LOG_DIR-.docker/apache2/logs}:/var/log/apache2
+    environment:
+      - AMBIENTE:DEV
+
+  mysql:
+    build: .docker/bin/mysql
+    container_name: 'NEWSREADER-5.6-mysql'
+    restart: 'always'
+    ports:
+      - "3377:3306"
+    volumes: 
+      - .docker/mysql/data:/var/lib/mysql
+      - .docker/mysql/logs:/var/log/mysql
+      - .docker/bin/mysql/extra.cnf:/etc/mysql/conf.d/extra.cnf
+    environment:
+        MYSQL_ROOT_PASSWORD: FB_e3W)>-)gH(/5m
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 'NEWSREADER-phpmyadmin'
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - '8099:80'
+    volumes: 
+      - /sessions
+  
+  redis:
+    container_name: 'NEWSREADER-redis'
+    image: redis:latest
+    ports:
+      - "6379:6379"

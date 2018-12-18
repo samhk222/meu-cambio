@@ -1,0 +1,5 @@
+[mysqld]
+sql_mode=STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+# innodb_file_format = Barracuda
+# innodb_large_prefix = 1
+# innodb_file_per_table = ON
