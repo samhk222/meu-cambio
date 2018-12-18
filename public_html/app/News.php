@@ -16,4 +16,10 @@ class News extends Model
 
     protected $dates = ['created_at', 'updated_at', 'pubDate'];
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', '=', 1);
+    }
+
+
 }

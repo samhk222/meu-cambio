@@ -1,4 +1,0 @@
-* * * * * root echo helloxxx > /dev/pts/0
-* * * * * root date > /dev/pts/0
-* * * * * root echo "Hello world" >> /var/log/cron.log 2>&1 
-

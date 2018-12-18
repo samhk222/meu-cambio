@@ -51,35 +51,10 @@ ENV LARAVEL_PATH ~/.composer/vendor/bin
 #Enable apache modules
 RUN a2enmod rewrite headers proxy proxy_http
 
-RUN echo "n"
-# ADD crontab /etc/cron.d/hello-cron
-# ADD scripts.sh /usr/local/bin/
-# RUN chmod +x /usr/local/bin/scripts.sh
-
-# RUN chmod 777 /etc/cron.d/hello-cron
-# RUN crontab /etc/cron.d/hello-cron &
-# RUN touch /var/log/cron.log
-
-# RUN touch /var/log/cron.log
-
-# RUN (crontab -l ; echo "* * * * * echo "Hello world" >> /var/log/cron.log") | crontab
-
-# CMD cron && tail -f /var/log/cron.log
-# RUN cron
-
-COPY crontab /var/crontab.txt
-RUN crontab /var/crontab.txt
-RUN chmod 600 /etc/crontab
+RUN echo "*/10 * * * * /usr/local/bin/php -f /var/www/html/artisan route:call /refresh-feed >> /var/www/html/index.html" | crontab -
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-# RUN echo "/usr/sbin/apache2ctl -D FOREGROUND" >> /etc/bash.bashrc
-# RUN echo "cron" >> /etc/bash.bashrc
-ENTRYPOINT ["/usr/bin/supervisord"]
-
-
-# ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
-
-
+CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NewsController extends Controller
 {
@@ -15,8 +18,24 @@ class NewsController extends Controller
     public function index()
     {
         return view('news.index', [
-            'News' => News::orderBy('pubDate','desc')->paginate(10)
+            'News' => News::active()->orderBy('pubDate','desc')->paginate(10)
         ]);
+    }
+    
+    /**
+     * Display a listing of the resources, paginated.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function apiPaginate()
+    {
+
+        try {
+            $news = News::active()->orderBy('pubDate','desc')->paginate(10);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => "Nenhuma notícia encontrada"], 404);
+        }
+        return $news;
     }
 
     /**
@@ -49,7 +68,7 @@ class NewsController extends Controller
     public function show(Request $request)
     {
         //
-        $news = News::findorFail($request->id);
+        $news = News::active()->findorFail($request->id);
         return view('news.show', ['news' => $news]);
     }
 
@@ -62,7 +81,12 @@ class NewsController extends Controller
     public function showJSON(Request $request)
     {
         //
-        return News::findorFail($request->id);
+        try {
+            $news = News::active()->findorFail($request->id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => "Notícia não existe"], 404);
+        }
+        return $news;
     }
 
 

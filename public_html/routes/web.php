@@ -18,5 +18,4 @@ Route::get('/', function () {
 
 Route::get('/news', 'NewsController@index');
 Route::get('/news/{id}/{slug}', 'NewsController@show');
-Route::get('/news/{id}', 'NewsController@showJSON');
 Route::get('/refresh-feed', 'FeedController@index');
