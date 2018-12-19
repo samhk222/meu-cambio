@@ -5,7 +5,7 @@ Disponibilizar uma API para um portal de notícias, com as seguintes capacidades
 - Listagem das notícias, com paginação, limitado em 10 registros por chamada
 - Disponibilizar um endpoint para exibir os dados de uma única notícia
 
-### Servidores de teste
+### Servidores de testes
 Caso prefira testar diretamente a API, disponibilizei ela em dois servidores cloud.
 
 * Amazon
@@ -20,12 +20,10 @@ Caso prefira testar diretamente a API, disponibilizei ela em dois servidores clo
 | ------------- | ------------- | 
 | Amazon  | http://18.222.255.249:8877  |
 | Digital Ocean  | http://68.183.51.253:8877  |
-| Local  | http://0.0.0.0:8877 (Após seguir os 11 passos de instalação, abaixo listados)  |
+| Local  | http://0.0.0.0:8877 (Após seguir os 10 passos de instalação, abaixo listados)  |
 
 ### Instalação
 Para facilitar o deploy e os testes, a aplicação foi construída com os serviços rodando via docker. Dessa força ficará fácil para o Thiago ou qualquer outra pessoa testar, assim como foi fácil fazer o deploy na [Amazon](amazon.com) Amazon e na [DigitalOcean](www.digitalocean.com) DigitalOcean
-
-
 
 Siga os 10 passos. Os comandos devem ser digitados no seu terminal do linux.
 
@@ -62,8 +60,12 @@ Siga os 10 passos. Os comandos devem ser digitados no seu terminal do linux.
 10. Gere os primeiros registros 
 `docker exec -it NEWS-7.2.x-webserver php artisan route:call /refresh-feed`
 
-11. Execute os testes caso necessário
+### Testes
+Execute os testes caso necessário com o comando abaixo
 `docker exec -it NEWS-7.2.x-webserver /var/www/html/vendor/bin/phpunit --testdox`
+
+![testes](http://aia.la/tmp/testes.png)
+Disclaimer: foram feitos apenas alguns testes, como prova de conceito.
 
 ### Arquitetura do desenvolvimento
 Algumas decisões tomadas para o desenvolvimento da API
@@ -72,17 +74,20 @@ Algumas decisões tomadas para o desenvolvimento da API
 2. Armazenar o histórico, pois o feed apenas busca os últimos 40 registros, e nossa aplicação está armazenando todos a partir do momento do deploy.
 2. Velocidade de acesso dos registros, uma vez que já estão na própria máquina e não teria a latencia de http
 3. Utilizei o docker para facilitar o deploy e para garantir que os ambientes de desenvolvimento sejam iguais ao de produção. 
-4. As notícias são recuperadas no feed do g1 de 10 em 10 minutos, isso é configurado dentro do arquivo do docker.
+4. As notícias são recuperadas no feed do g1 de 10 em 10 minutos, através de uma rota específica (listada abaixo). Esse parâmetro é configurado dentro do dockerfile.
 5. Possibilidade de filtrar os registros diretamente no banco. Pensando comercialmente, poderiamos criar filtros que não exibissem notícias com determinadas palavras, para preservar nossos clientes de ler algo que não seja conveniente, ou também podemos exibir notícias que foram aprovadas, etc.
 6. Desenvolvi para ser escalável, caso futuramente decidirmos incluir uma nova fonte de notícia, do g1 ou de outro portal, basta cadastrar na tabela *feeds*, e eles serão incorporados automaticamente a nossa API
-7. 
+7. Como boa prática, appendei na frente das rotas a versão da API, para não quebrar em futuras implantações, e manter a compatibilidade
 
 ### Rotas
 | Endpoint  | IP | 
 | ------------- | ------------- | 
-| /api/v01/news  | Retorna |
-| /api/v01/news/:id  | http://68.183.51.253:8877  |
-| /  | http://0.0.0.0:8877 (Após seguir os 11 passos de instalação, abaixo listados)  |
+| /api/v01/news  | Retorna todas as notícias, de forma paginada |
+| /api/v01/news/:id  | Retorna os dados de uma notícia específica, ou erro em caso de notícia não existente  |
+| /  | Lista, em HTML,  as notícias, de forma paginada|
+| /refresh-feed  | Rota responsável pelo parser dos dados do feed rss  |
+
+
 
 ### Modelagem
 Como não temos autenticação, a modelagem ficou a mais simples possível, e documento aqui para os testes
