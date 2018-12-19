@@ -9,6 +9,15 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style type="text/css">
+        img {
+            max-width: 800px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+        }
+    </style>
   </head>
   <body>
     <div class="container-fluid" style="padding-top: 10px;">

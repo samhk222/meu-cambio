@@ -12,5 +12,5 @@
     
     <h3>{{ $news->title }}</h3>
     
-    <p class="text-justify">{!! nl2br($news->description) !!}</p>
+    <p class="text-justify img-fluid">{!! nl2br($news->description) !!}</p>
 @endsection
