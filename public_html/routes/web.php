@@ -11,11 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function() {
+    return Redirect::to('/news');
 });
 
-
 Route::get('/news', 'NewsController@index');
-Route::get('/news/{id}/{slug}', 'NewsController@show');
 Route::get('/refresh-feed', 'FeedController@index');
